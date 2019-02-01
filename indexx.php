@@ -37,8 +37,26 @@ if (isset($_GET['logout'])) {
     <?php  if (isset($_SESSION['username'])) : ?>
         <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
         <a href="buscador.php">buscar personas</a>
-        <p>usuario: <strong><?php echo $_POST['nombre'] ?></strong></p>
-        <p>mensaje: <strong><?php echo $_POST['mensaje'] ?></strong></p>
+        <?php
+        include "db.php";
+///consultamos a la base
+        $consulta = "SELECT * FROM chat ORDER BY id DESC";
+        $ejecutar = $conexion->query($consulta);
+        while($fila = $ejecutar->fetch_array()) :
+            ?>
+            <div id="datos-chat">
+                <span style="color: #1C62C4;"><?php echo $fila['nombre']; ?></span>
+                <span style="color: #848484;"><?php echo $fila['mensaje']; ?></span>
+                <span style="float: right;"><?php echo formatearFecha($fila['fecha']); "<br>"; ?>
+
+                    <button id="delete" name="delete">delete</button >
+            <button id="update" name="update">update</button >
+
+
+        </span>
+            </div>
+
+        <?php endwhile; ?>
         <p> <a href="mensa.php" style="color: red;">escribir un mensaje</a> </p>
         <p> <a href="indexx.php?logout='1'" style="color: red;">logout</a> </p>
     <?php endif ?>
